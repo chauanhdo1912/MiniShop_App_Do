@@ -1,0 +1,29 @@
+package com.le_do.minishop.ui
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.le_do.minishop.model.Product
+import com.le_do.minishop.network.RetrofitClient
+import kotlinx.coroutines.launch
+import android.util.Log
+
+class ProductDetailViewModel : ViewModel() {
+    private val _product = MutableLiveData<Product>()
+    val product: LiveData<Product> = _product
+    fun fetchProduct(id: Int){
+        viewModelScope.launch {
+            try{
+                val list = RetrofitClient.apiService.getProducts()
+                val result = list.firstOrNull { it.id == id }
+                if (result != null) {
+                    _product.value = result
+                } else {
+                    Log.e("ProductDetailVM", "Product not found with id $id")
+                }
+            } catch (e: Exception){
+                Log.e("ProductDetailVM", "Error fetching product: $e")
+            }
+        }
+    }
+}
