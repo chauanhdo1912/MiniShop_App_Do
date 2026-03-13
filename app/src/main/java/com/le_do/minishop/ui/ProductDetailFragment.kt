@@ -38,7 +38,7 @@ class ProductDetailFragment : Fragment() {
 
         val toolbar = binding.toolbar
         toolbar.setNavigationIcon(R.drawable.ic_back)
-        toolbar.setOnClickListener {
+        toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 
@@ -49,9 +49,6 @@ class ProductDetailFragment : Fragment() {
             binding.tvTitle.text = product.title
             binding.tvPrice.text = "€${product.price}"
             binding.tvDescription.text = product.description
-            binding.btnAddToCart.setOnClickListener {
-                cartViewModel.addToCart(product)
-            }
 
             Glide.with(this)
                 .load(product.image)
@@ -60,8 +57,7 @@ class ProductDetailFragment : Fragment() {
             binding.btnAddToCart.setOnClickListener {
                 cartViewModel.addToCart(product)
                 Toast.makeText(requireContext(), "Added to cart", Toast.LENGTH_SHORT).show()
-                val action = ProductDetailFragmentDirections.actionProductDetailFragmentToCartFragment()
-                findNavController().navigate(action)
+                findNavController().navigate(R.id.cartFragment)
             }
 
         }

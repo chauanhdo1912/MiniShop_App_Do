@@ -48,4 +48,10 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
             _user.postValue(u)
         }
     }
+    fun updateUser(user: User) {
+        viewModelScope.launch {
+            repository.updateUser(user)
+            _user.postValue(user)
+        }
+    }
 }

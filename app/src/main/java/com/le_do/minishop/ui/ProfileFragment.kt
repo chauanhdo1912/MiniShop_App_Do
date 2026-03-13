@@ -12,49 +12,48 @@ import com.le_do.minishop.viewmodel.ProfileViewModel
 import com.le_do.minishop.R
 import com.le_do.minishop.data.local.AppDatabase
 import com.le_do.minishop.data.local.UserRepository
+import androidx.appcompat.app.AppCompatDelegate
 
 class ProfileFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
-
-    private lateinit var session: SessionManager
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        session = SessionManager(requireContext())
+        binding.btnAccount.setOnClickListener {
+            findNavController().navigate(R.id.accountFragment)
+        }
 
-        val db = AppDatabase.getInstance(requireContext())
-        val userRepository = UserRepository(db.userDao())
-        viewModel = ProfileViewModel(userRepository)
-
-        val email = session.getEmail() ?: return
-        viewModel.loadUser(email)
-
-        viewModel.user.observe(viewLifecycleOwner) { user ->
-            binding.tvName.text = user.name
-            binding.tvEmail.text = user.email
+        binding.btnMyOrders.setOnClickListener {
+            findNavController().navigate(R.id.myOrdersFragment)
         }
 
         binding.btnLogout.setOnClickListener {
-            session.logout()
+            SessionManager(requireContext()).logout()
             findNavController().navigate(R.id.loginFragment)
+        }
+
+        binding.btnDarkMode.setOnClickListener {
+            toggleDarkMode()
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun toggleDarkMode() {
+        val nightMode = AppCompatDelegate.getDefaultNightMode()
+
+        if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
     }
 }

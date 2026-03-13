@@ -1,9 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Base.Theme.MiniShop_App_Do" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="colorPrimary">#2ED6A1</item>
+        <item name="colorSecondary">#2ED6A1</item>
+        <item name="android:statusBarColor">#1F8F83</item>
+
     </style>
 
     <style name="Theme.MiniShop_App_Do" parent="Base.Theme.MiniShop_App_Do" />
+
 </resources>
