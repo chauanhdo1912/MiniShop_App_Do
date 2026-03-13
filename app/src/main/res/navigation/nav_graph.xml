@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Navigation Graph der App -->
+<!-- Definiert alle Screens und Navigation zwischen den Fragmenten -->
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,10 +16,12 @@
         android:label="Login"
         tools:layout="@layout/fragment_login">
 
+        <!-- Navigation zur Register Seite -->
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
 
+        <!-- Navigation zur Home Seite -->
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
@@ -28,77 +34,91 @@
         android:label="Register"
         tools:layout="@layout/fragment_register">
 
+        <!-- Nach Registrierung zur Home Seite -->
         <action
             android:id="@+id/action_registerFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+
+    <!-- Home Screen mit Produktliste -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.le_do.minishop.ui.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
 
+        <!-- Produktdetails öffnen -->
         <action
             android:id="@+id/action_homeFragment_to_productDetailFragment"
             app:destination="@+id/productDetailFragment"/>
     </fragment>
 
-
+    <!-- Warenkorb Screen -->
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.le_do.minishop.ui.CartFragment"
         android:label="Cart"
         tools:layout="@layout/fragment_cart" >
-    <action
-        android:id="@+id/action_cartFragment_to_homeFragment"
-        app:destination="@id/homeFragment" />
+
+        <!-- Zurück zur Home Seite -->
+        <action
+            android:id="@+id/action_cartFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
-
+    <!-- Produkt Detail Seite -->
     <fragment
         android:id="@+id/productDetailFragment"
         android:name="com.le_do.minishop.ui.ProductDetailFragment"
         tools:layout="@layout/fragment_product_detail"
         android:label="Product Detail">
 
+        <!-- Produkt ID wird an Fragment übergeben -->
         <argument
             android:name="productId"
             app:argType="integer"/>
     </fragment>
 
+    <!-- Profil Seite -->
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.le_do.minishop.ui.ProfileFragment" />
+
+    <!-- Kategorien Screen -->
     <fragment
         android:id="@+id/categoryFragment"
         android:name="com.le_do.minishop.ui.CategoryFragment"
         android:label="Category">
+
+        <!-- Produktdetail aus Kategorie öffnen -->
         <action
             android:id="@+id/action_categoryFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
     </fragment>
 
+    <!-- Bestellungen des Users -->
     <fragment
         android:id="@+id/myOrdersFragment"
         android:name="com.le_do.minishop.ui.MyOrdersFragment"
         android:label="My Orders" />
 
+    <!-- Profil bearbeiten -->
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.le_do.minishop.ui.EditProfileFragment"
         android:label="Edit Profile" />
 
+    <!-- Account Seite -->
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.le_do.minishop.ui.AccountFragment"
         android:label="Account">
 
+        <!-- Navigation zur Edit Profile Seite -->
         <action
             android:id="@+id/action_accountFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
 
     </fragment>
-
-
 
 </navigation>

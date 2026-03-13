@@ -8,16 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.le_do.minishop.databinding.FragmentProfileBinding
 import com.le_do.minishop.utils.SessionManager
-import com.le_do.minishop.viewmodel.ProfileViewModel
 import com.le_do.minishop.R
-import com.le_do.minishop.data.local.AppDatabase
-import com.le_do.minishop.data.local.UserRepository
 import androidx.appcompat.app.AppCompatDelegate
 
+// Profil-Seite der App mit verschiedenen Benutzeroptionen
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
 
+    // Layout des Fragments laden
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,26 +26,32 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
+    // Aktionen der Buttons im Profil
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        // Öffnet die Account-Seite
         binding.btnAccount.setOnClickListener {
             findNavController().navigate(R.id.accountFragment)
         }
 
+        // Öffnet die Bestellübersicht
         binding.btnMyOrders.setOnClickListener {
             findNavController().navigate(R.id.myOrdersFragment)
         }
 
+        // Benutzer ausloggen und zur Login-Seite gehen
         binding.btnLogout.setOnClickListener {
             SessionManager(requireContext()).logout()
             findNavController().navigate(R.id.loginFragment)
         }
 
+        // Dark Mode ein/aus schalten
         binding.btnDarkMode.setOnClickListener {
             toggleDarkMode()
         }
     }
 
+    // Wechselt zwischen Light Mode und Dark Mode
     private fun toggleDarkMode() {
         val nightMode = AppCompatDelegate.getDefaultNightMode()
 

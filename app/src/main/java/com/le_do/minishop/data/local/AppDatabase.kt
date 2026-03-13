@@ -10,22 +10,28 @@ import com.le_do.minishop.data.local.entity.User
 import com.le_do.minishop.data.local.entity.OrderEntity
 import com.le_do.minishop.data.local.entity.OrderItemEntity
 
-
+// Room Datenbank der App
 @Database(
     entities = [User::class,
-    OrderEntity::class,
-    OrderItemEntity::class],
+        OrderEntity::class,
+        OrderItemEntity::class],
     version = 4
 )
 abstract class AppDatabase : RoomDatabase() {
 
+    // Zugriff auf User Tabelle
     abstract fun userDao(): UserDao
+
+    // Zugriff auf Order Tabelle
     abstract fun OrderDao(): OrderDao
 
     companion object {
+
+        // Singleton Instanz der Datenbank
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
+        // Datenbank erstellen oder vorhandene Instanz zurückgeben
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(

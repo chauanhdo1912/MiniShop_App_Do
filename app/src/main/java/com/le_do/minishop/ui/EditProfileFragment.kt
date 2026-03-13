@@ -15,9 +15,9 @@ import com.le_do.minishop.databinding.FragmentEditProfileBinding
 import com.le_do.minishop.utils.SessionManager
 import com.le_do.minishop.viewmodel.UserViewModel
 import com.le_do.minishop.viewmodel.UserViewModelFactory
-import android.content.Intent
 import java.io.File
 
+// Fragment zum Bearbeiten des Benutzerprofils
 class EditProfileFragment : Fragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
@@ -27,6 +27,7 @@ class EditProfileFragment : Fragment() {
 
     private var savedImagePath: String? = null
 
+    // Speichert das ausgewählte Bild im internen Speicher
     private fun saveImageToInternalStorage(uri: Uri): String {
         val inputStream = requireContext().contentResolver.openInputStream(uri)
         val fileName = "avatar_${System.currentTimeMillis()}.jpg"
@@ -41,6 +42,7 @@ class EditProfileFragment : Fragment() {
         return file.absolutePath
     }
 
+    // Öffnet die Galerie um ein Bild auszuwählen
     private val pickImage =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let {
@@ -53,6 +55,7 @@ class EditProfileFragment : Fragment() {
             }
         }
 
+    // Layout des Fragments laden
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,17 +65,21 @@ class EditProfileFragment : Fragment() {
         return binding.root
     }
 
+    // Benutzerdaten laden und bearbeiten
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // ViewModel mit Repository und Datenbank
         val db = AppDatabase.getInstance(requireContext())
         val repository = UserRepository(db.userDao())
         val factory = UserViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
 
+        // Email des aktuellen Users holen
         val email = SessionManager(requireContext()).getEmail() ?: return
         viewModel.getUserByEmail(email)
 
+        // Benutzerdaten im Formular anzeigen
         viewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
 
@@ -84,10 +91,12 @@ class EditProfileFragment : Fragment() {
             }
         }
 
+        // Avatar ändern
         binding.ivAvatar.setOnClickListener {
             pickImage.launch("image/*")
         }
 
+        // Änderungen speichern
         binding.btnSave.setOnClickListener {
 
             val address = binding.etAddress.text.toString()
@@ -106,6 +115,7 @@ class EditProfileFragment : Fragment() {
         }
     }
 
+    // Binding freigeben
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

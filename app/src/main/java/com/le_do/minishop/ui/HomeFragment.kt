@@ -8,34 +8,50 @@ import android.view.ViewGroup
 import com.le_do.minishop.R
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.le_do.minishop.ui.adapter.ProductAdapter
 import com.le_do.minishop.viewmodel.HomeViewModel
-import androidx.fragment.app.activityViewModels
-import com.le_do.minishop.viewmodel.CartViewModel
+
+
+// Home-Seite der App: zeigt alle Produkte
 class HomeFragment : Fragment() {
 
+    // Wird aufgerufen nachdem die View erstellt wurde
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
 
-
+        // RecyclerView für die Produktliste
         val rv = view.findViewById<RecyclerView>(R.id.rvProduct)
+
+        // Grid Layout mit 2 Spalten
         rv.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        // ViewModel laden
         val viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
+        // Produkte aus der API laden
         viewModel.fetchProduct()
 
+        // Beobachtet die Produktliste
         viewModel.fetchProductLiveData.observe(viewLifecycleOwner){ products ->
+
+            // Adapter für die Produkte
             val adapter = ProductAdapter(products) { productId ->
+
+                // Wenn Produkt geklickt wird → zur Detailseite
                 val action = HomeFragmentDirections.actionHomeFragmentToProductDetailFragment(productId)
                 findNavController().navigate(action)
 
             }
+
+            // Adapter an RecyclerView setzen
             rv.adapter = adapter
 
         }
+
+        // Produkte erneut laden
         viewModel.fetchProduct()
     }
 
@@ -43,7 +59,8 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
+        // Layout der Home-Seite laden
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 }

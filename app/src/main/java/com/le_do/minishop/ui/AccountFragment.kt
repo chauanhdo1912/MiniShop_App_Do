@@ -15,10 +15,11 @@ import java.util.Date
 import java.util.Locale
 import androidx.navigation.fragment.findNavController
 import com.le_do.minishop.R
-import android.net.Uri
 import java.io.File
 import android.util.Log
 import com.bumptech.glide.Glide
+
+// Fragment zeigt die Account-Informationen des aktuellen Benutzers
 class AccountFragment : Fragment() {
 
     private var _binding: FragmentAccountBinding? = null
@@ -26,6 +27,7 @@ class AccountFragment : Fragment() {
 
     private lateinit var viewModel: UserViewModel
 
+    // Layout des Fragments laden
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,22 +37,28 @@ class AccountFragment : Fragment() {
         return binding.root
     }
 
+    // Benutzerinformationen laden und anzeigen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Zurück-Button
         binding.btnBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        // ViewModel mit Repository und Datenbank erstellen
         val db = AppDatabase.getInstance(requireContext())
         val repository = UserRepository(db.userDao())
         val factory = UserViewModelFactory(repository)
         viewModel = ViewModelProvider(requireActivity(), factory)[UserViewModel::class.java]
 
+        // Email des eingeloggten Users holen
         val email = SessionManager(requireContext()).getEmail() ?: return
 
+        // Benutzer aus der Datenbank laden
         viewModel.getUserByEmail(email)
 
+        // Benutzerinformationen im UI anzeigen
         viewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
                 binding.tvEmail.text = it.email
@@ -58,6 +66,7 @@ class AccountFragment : Fragment() {
 
                 binding.tvAddress.text = it.address ?: "No address"
 
+                // Avatar anzeigen
                 if (!it.avatarUri.isNullOrEmpty()) {
 
                     val file = File(it.avatarUri!!)
@@ -80,18 +89,23 @@ class AccountFragment : Fragment() {
                     binding.ivAvatar.setImageResource(R.drawable.ic_account)
                 }
 
+                // Datum der Registrierung anzeigen
                 val date = SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH)
                 binding.tvMemberSince.text =
                     date.format(Date(user.createdAt))
 
             }
         }
+
+        // Navigation zur Edit-Profil Seite
         binding.btnEditProfile.setOnClickListener {
             findNavController().navigate(
                 R.id.action_accountFragment_to_editProfileFragment
             )
         }
     }
+
+    // Beim Zurückkehren zur Seite Daten erneut laden
     override fun onResume() {
         super.onResume()
 
@@ -99,6 +113,7 @@ class AccountFragment : Fragment() {
         viewModel.getUserByEmail(email)
     }
 
+    // Binding freigeben
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
