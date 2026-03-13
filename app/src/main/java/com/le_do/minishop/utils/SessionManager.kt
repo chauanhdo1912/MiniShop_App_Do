@@ -16,8 +16,8 @@ class SessionManager(context: Context) {
     fun isLoggedIn(): Boolean =
         prefs.getBoolean("isLoggedIn", false)
 
-    fun getEmail(): String? =
-        prefs.getString("email", null)
+    fun getEmail(): String =
+        prefs.getString("email", "") ?: ""
 
     fun logout() {
         prefs.edit().clear().apply()

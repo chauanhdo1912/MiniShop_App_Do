@@ -11,7 +11,18 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:title="Cart"
-        android:titleTextColor="@android:color/white"/>
+        android:titleTextColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/tvEmptyCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your cart is empty"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="24dp"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCart"

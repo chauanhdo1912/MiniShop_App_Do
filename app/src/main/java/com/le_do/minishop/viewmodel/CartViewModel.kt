@@ -48,4 +48,7 @@ class CartViewModel : ViewModel() {
         }
         _cartItems.value = list
     }
+    fun clearCart() {
+        _cartItems.value = mutableListOf()
+    }
 }
