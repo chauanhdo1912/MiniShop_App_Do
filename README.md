@@ -1,9 +1,9 @@
 # MiniShop Android App
 
 ## Student
-Name: Le Chau Anh Do
-Kurs: App Entwicklung mit Android WiSe-2025
-Dozent: Holger Zimmermann
+- Name: Le Chau Anh Do
+- Kurs: App Entwicklung mit Android WiSe-2025
+- Dozent: Holger Zimmermann
 
 ---
 
